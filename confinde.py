@@ -26,6 +26,7 @@
 
 
 import logging
+from pprint import pprint
 
 from sleekxmpp import ClientXMPP
 from sleekxmpp.exceptions import IqError, IqTimeout
@@ -65,12 +66,35 @@ class ConfindeBot(ClientXMPP):
 
     def message(self, msg):
         if msg['type'] in ('chat', 'normal'):
-            msg.reply(msg['body']).send()
+            #print dir(msg)
+            user_from = str(msg.get_from()).split('/')[0]
+            message = msg['body']
+
+            response = self.process_message(user_from, message)
+
+            msg.reply(response).send()
+
+    def process_message(self, user_from, message):
+        """Processes the message - and returns an appropriate text response."""
+        if message[:2] == '/f':
+            # find mode
+            words = message[2:].replace(',',' ').strip().split(' ')
+            response = ''
+            rows = Message.get_by_search(email=user_from, words_to_match=words)
+            
+            for r in rows:
+                response += r.text + '\n'
+
+            return response
+
+        else:
+            Message.store(email=user_from, text=message)
+            return "Ok."
 
 
 if __name__ == '__main__':
-    #logging.basicConfig(level=logging.DEBUG,
-    #                    format='%(levelname)-8s %(message)s')
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(levelname)-8s %(message)s')
 
     xmpp = ConfindeBot(BOT_USERNAME, BOT_PASSWORD)
     xmpp.connect(('talk.google.com',5222))

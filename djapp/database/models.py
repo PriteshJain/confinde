@@ -31,16 +31,16 @@ class Message(models.Model):
             #TODO Raise a sane error
             raise
 
-        return Message.get_recursive_union_filter(
+        return Message._get_recursive_union_filter(
                 Message.objects, words_to_match, user)
 
     @staticmethod
-    def get_recursive_union_filter(message_objects, words, user):
+    def _get_recursive_union_filter(message_objects, words, user):
         if len(words) == 0:
             return message_objects
 
         words_new = words[1:]
-        return Message.get_recursive_union_filter(
+        return Message._get_recursive_union_filter(
                 message_objects.filter(
                     text__contains=words[0], user=user), words_new, user)
 
