@@ -31,6 +31,13 @@ from sleekxmpp import ClientXMPP
 from sleekxmpp.exceptions import IqError, IqTimeout
 from settings import *
 
+from django.core.management import setup_environ
+from djapp import settings
+
+setup_environ(settings)
+
+from djapp.database.models import Information
+
 class ConfindeBot(ClientXMPP):
 
     def __init__(self, jid, password):
@@ -65,6 +72,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(levelname)-8s %(message)s')
 
-    xmpp = EchoBot(BOT_USERNAME, BOT_PASSWORD)
+    xmpp = ConfindeBot(BOT_USERNAME, BOT_PASSWORD)
     xmpp.connect(('talk.google.com',5222))
     xmpp.process(block=True)
