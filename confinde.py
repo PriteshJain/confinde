@@ -36,7 +36,7 @@ from djapp import settings
 
 setup_environ(settings)
 
-from djapp.database.models import Information
+from djapp.database.models import Information, Keyword
 
 class ConfindeBot(ClientXMPP):
 

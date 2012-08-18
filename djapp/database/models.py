@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class Information(models.Model):
+class Message(models.Model):
     """Stores actual messages, and optionally tags with keywords."""
-    message = models.TextField()
+    text = models.TextField()
+    user = models.ForeignKey(User)
     keyword = models.ForeignKey('Keyword', blank=True, null=True)
 
 
