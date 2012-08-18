@@ -36,7 +36,7 @@ from djapp import settings
 
 setup_environ(settings)
 
-from djapp.database.models import Information, Keyword
+from djapp.database.models import Message, Keyword
 
 class ConfindeBot(ClientXMPP):
 
@@ -69,8 +69,8 @@ class ConfindeBot(ClientXMPP):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)-8s %(message)s')
+    #logging.basicConfig(level=logging.DEBUG,
+    #                    format='%(levelname)-8s %(message)s')
 
     xmpp = ConfindeBot(BOT_USERNAME, BOT_PASSWORD)
     xmpp.connect(('talk.google.com',5222))
